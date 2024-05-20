@@ -36,13 +36,6 @@
 3. Install dependencies: `npm install`
 4. Start the application in dev mode: `npm run dev`
 
-## How to Start the Application
-
-1. Clone the repository: `git clone https://github.com/AdnanPobrklic/to-do-list`
-2. Navigate into the directory: `cd to-do-list`
-3. Install dependencies: `npm install`
-4. Start the application in dev mode: `npm run dev`
-
 ## Libraries and npm Packages
 
 -   `react`: ^18.0.2
