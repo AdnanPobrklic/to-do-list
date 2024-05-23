@@ -29,7 +29,7 @@ export default function Todo({
 
     return (
         <li
-            className={`border-2 border-slate-400 rounded-[15px] flex justify-between gap-5 px-5 py-2 text-xl shadow-inner opacity ${
+            className={`border-2 border-slate-400 rounded-[15px] flex justify-between gap-5 px-5 py-2 text-xl shadow-inner opacity-0 ${
                 todo.done
                     ? "line-through decoration-[3px] decoration-yellow-500"
                     : ""
