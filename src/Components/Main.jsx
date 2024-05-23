@@ -14,7 +14,7 @@ export default function Main() {
 
     useEffect(() => {
         localStorage.setItem("tasks", JSON.stringify(taskList));
-        setFilteredTaskList(taskList);
+        applyFilter(filter);
     }, [taskList]);
 
     const handleInputChange = (event) => {
@@ -34,14 +34,16 @@ export default function Main() {
                 { content: task, done: false, added: new Date() },
             ]);
             setTask("");
-            setFilter("0");
         }
     };
 
     const handleToDoCompletion = (index) => {
+        const taskIndex = taskList.findIndex(
+            (task) => task.added === filteredTaskList[index].added
+        );
         setTaskList(
             taskList.map((task, i) =>
-                i === index
+                i === taskIndex
                     ? { ...task, done: !task.done, triggerDelete: false }
                     : task
             )
@@ -49,15 +51,18 @@ export default function Main() {
     };
 
     const handleDelete = (index) => {
+        const taskIndex = taskList.findIndex(
+            (task) => task.added === filteredTaskList[index].added
+        );
         setTaskList((prevTaskList) =>
             prevTaskList.map((task, i) =>
-                i === index ? { ...task, triggerDelete: true } : task
+                i === taskIndex ? { ...task, triggerDelete: true } : task
             )
         );
 
         setTimeout(() => {
             setTaskList((prevTaskList) =>
-                prevTaskList.filter((_, i) => i !== index)
+                prevTaskList.filter((_, i) => i !== taskIndex)
             );
         }, 500);
     };
@@ -65,6 +70,10 @@ export default function Main() {
     const filterTodos = (event) => {
         const filterValue = event.target.value;
         setFilter(filterValue);
+        applyFilter(filterValue);
+    };
+
+    const applyFilter = (filterValue) => {
         if (filterValue === "0") {
             setFilteredTaskList(taskList);
         } else if (filterValue === "1") {
@@ -109,7 +118,7 @@ export default function Main() {
                     {showWarning}
                 </p>
                 <select
-                    className="absolute top-[15px] right-[0px] bg-[#018382] border border-slate-200 text-white p-1 px-2 rounded font-[500]"
+                    className="absolute top-[15px] right-[0px] bg-[#018382] border border-slate-200 text-white p-1 px-2 rounded font-[500] outline-none"
                     onChange={filterTodos}
                     value={filter}
                 >
