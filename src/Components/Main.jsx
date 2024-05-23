@@ -9,9 +9,12 @@ export default function Main() {
     const [taskList, setTaskList] = useState(
         savedTasks ? JSON.parse(savedTasks) : []
     );
+    const [filteredTaskList, setFilteredTaskList] = useState(taskList);
+    const [filter, setFilter] = useState("0");
 
     useEffect(() => {
         localStorage.setItem("tasks", JSON.stringify(taskList));
+        setFilteredTaskList(taskList);
     }, [taskList]);
 
     const handleInputChange = (event) => {
@@ -20,7 +23,7 @@ export default function Main() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (!task.length > 0) {
+        if (task.length === 0) {
             setShowWarning("Task content cannot be empty");
         } else if (task.length > 100) {
             setShowWarning("Task content cannot be more than 100 chars");
@@ -31,6 +34,7 @@ export default function Main() {
                 { content: task, done: false, added: new Date() },
             ]);
             setTask("");
+            setFilter("0");
         }
     };
 
@@ -45,15 +49,29 @@ export default function Main() {
     };
 
     const handleDelete = (index) => {
-        setTaskList(
-            taskList.map((task, i) =>
+        setTaskList((prevTaskList) =>
+            prevTaskList.map((task, i) =>
                 i === index ? { ...task, triggerDelete: true } : task
             )
         );
 
         setTimeout(() => {
-            setTaskList(taskList.filter((_, i) => i !== index));
+            setTaskList((prevTaskList) =>
+                prevTaskList.filter((_, i) => i !== index)
+            );
         }, 500);
+    };
+
+    const filterTodos = (event) => {
+        const filterValue = event.target.value;
+        setFilter(filterValue);
+        if (filterValue === "0") {
+            setFilteredTaskList(taskList);
+        } else if (filterValue === "1") {
+            setFilteredTaskList(taskList.filter((todo) => todo.done));
+        } else {
+            setFilteredTaskList(taskList.filter((todo) => !todo.done));
+        }
     };
 
     useEffect(() => {
@@ -62,7 +80,7 @@ export default function Main() {
             setShowWarning("");
         }, 1500);
 
-        () => clearTimeout(timerId);
+        return () => clearTimeout(timerId);
     }, [showWarning]);
 
     return (
@@ -77,26 +95,36 @@ export default function Main() {
                 />
                 <button
                     type="submit"
-                    className="absolute right-2 xl:right-5 top-[50%] translate-y-[-50%] bg-white  flex items-center justify-center w-[30px] h-[30px] xl:w-[35px] xl:h-[35px] rounded-full md:hover:opacity-50 cursor-pointer transition-all"
+                    className="absolute right-2 xl:right-5 top-[50%] translate-y-[-50%] bg-white flex items-center justify-center w-[30px] h-[30px] xl:w-[35px] xl:h-[35px] rounded-full md:hover:opacity-50 cursor-pointer transition-all"
                 >
                     <i className="fa-solid fa-plus text-[15px] xl:text-[20px] text-[#018583] font-[900]"></i>
                 </button>
             </form>
-            <div className="w-full h-[5px] border-b border-slate-300">
+            <div className="relative w-full h-[5px] border-b border-slate-300 my-5">
                 <p
-                    className={`py-2 text-yellow-500 translate-y-[-25px] ${
+                    className={`py-2 text-yellow-500 absolute top-[-25px] left-0 ${
                         showWarning ? "block" : "hidden"
                     }`}
                 >
                     {showWarning}
                 </p>
+                <select
+                    className="text-neutral-950 absolute top-[15px] right-[0px] bg-transparent border border-slate-200 text-white p-1 px-2 rounded font-[500]"
+                    onChange={filterTodos}
+                    value={filter}
+                >
+                    <option value="0">All</option>
+                    <option value="1">Finished</option>
+                    <option value="2">Unfinished</option>
+                </select>
             </div>
-            {taskList.length > 0 ? (
-                <ul className="w-full flex flex-col-reverse gap-5 pb-[50px]">
-                    {taskList.map((todo, index) => (
+            {filteredTaskList.length > 0 ? (
+                <ul className="w-full flex flex-col-reverse gap-5 pb-[50px] mt-5">
+                    {filteredTaskList.map((todo, index) => (
                         <Todo
                             key={index}
                             todo={todo}
+                            filter={filter}
                             index={index}
                             isFirstLoad={isFirstLoad}
                             handleToDoCompletion={handleToDoCompletion}

@@ -7,6 +7,7 @@ export default function Todo({
     handleDelete,
     handleToDoCompletion,
     isFirstLoad,
+    filter,
 }) {
     const todoRef = useRef(null);
 
@@ -24,7 +25,7 @@ export default function Todo({
                 { opacity: 1, duration: 0.55 }
             );
         }
-    }, [index]);
+    }, [index, filter]);
 
     return (
         <li
