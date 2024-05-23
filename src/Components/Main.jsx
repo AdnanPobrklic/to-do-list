@@ -109,7 +109,7 @@ export default function Main() {
                     {showWarning}
                 </p>
                 <select
-                    className="text-neutral-950 absolute top-[15px] right-[0px] bg-transparent border border-slate-200 text-white p-1 px-2 rounded font-[500]"
+                    className="absolute top-[15px] right-[0px] bg-[#018382] border border-slate-200 text-white p-1 px-2 rounded font-[500]"
                     onChange={filterTodos}
                     value={filter}
                 >
