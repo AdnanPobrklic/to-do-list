@@ -93,7 +93,7 @@ export default function Main() {
     }, [showWarning]);
 
     return (
-        <main className="w-full grow flex flex-col gap-10 pt-[25px] xl:pt-[50px]">
+        <main className="w-full grow flex flex-col gap-5 xl:gap-10 pt-[25px] xl:pt-[50px]">
             <form onSubmit={handleSubmit} className="relative w-full">
                 <input
                     className="border-2 border-slate-300 rounded p-3 w-full bg-transparent text-[17px] lg:text-[19px] xl:text-[22px] 2xl:text-[24px] placeholder:text-slate-300 text-slate-200 font-[500] shadow-xl pr-[50px] xl:pr-[100px] outline-lime-300"
@@ -128,7 +128,7 @@ export default function Main() {
                 </select>
             </div>
             {filteredTaskList.length > 0 ? (
-                <ul className="w-full flex flex-col-reverse gap-5 pb-[50px] mt-5">
+                <ul className="w-full flex flex-col-reverse gap-5 mt-5">
                     {filteredTaskList.map((todo, index) => (
                         <Todo
                             key={index}
