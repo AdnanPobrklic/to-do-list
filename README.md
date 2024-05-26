@@ -28,6 +28,9 @@
     └── tailwind.config.js
     └── vite.config.js
 ```
+### Live Version
+
+You can access the live version of the app by visiting [this link](https://hulk-apps-internship.netlify.app/).
 
 ## How to Start the Application
 
